@@ -1,5 +1,6 @@
 package com.lcb.rpc.remoting.dto;
 
+import com.lcb.enumeration.RpcResponseCode;
 import lombok.*;
 
 import java.io.Serializable;
@@ -34,6 +35,22 @@ public class RpcResponse<T> implements Serializable {
      *响应数据，返回给客户端
      */
     private T data;
+
+    public static <T> RpcResponse<T> fail(RpcResponseCode rpcResponseCode){
+        RpcResponse<T> rpcResponse = new RpcResponse<>();
+        rpcResponse.setCode(rpcResponseCode.getCode());
+        rpcResponse.setMessage(rpcResponseCode.getMessage());
+        return rpcResponse;
+    }
+
+    public static <T> RpcResponse<T> success(T data,String requestId){
+        RpcResponse<T> rpcResponse = new RpcResponse<>();
+        rpcResponse.setCode(RpcResponseCode.SUCCESS.getCode());
+        rpcResponse.setMessage(RpcResponseCode.SUCCESS.getMessage());
+        rpcResponse.setData(data);
+        rpcResponse.setRequestId(requestId);
+        return rpcResponse;
+    }
 
 
 
