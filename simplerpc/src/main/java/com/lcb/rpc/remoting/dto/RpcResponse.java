@@ -31,7 +31,7 @@ public class RpcResponse<T> implements Serializable {
      */
     private String message;
     /**
-     *响应数据，返回给客户端；
+     *响应数据，返回给客户端
      */
     private T data;
 
