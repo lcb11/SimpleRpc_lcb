@@ -52,7 +52,7 @@ public class NettyClient {
                         ch.pipeline().addLast(new IdleStateHandler(0,5,0, TimeUnit.SECONDS));
                         //TODO 自定义序列化的编解码器
 
-                        //TODO 自定义Handler
+                        //TODO 自定义Handler；
 
                     }
                 });
