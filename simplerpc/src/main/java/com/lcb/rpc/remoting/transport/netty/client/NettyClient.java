@@ -1,5 +1,9 @@
 package com.lcb.rpc.remoting.transport.netty.client;
 
+import com.lcb.rpc.remoting.dto.RpcRequest;
+import com.lcb.rpc.remoting.dto.RpcResponse;
+import com.lcb.rpc.remoting.transport.netty.codec.NettyKryoDecoder;
+import com.lcb.rpc.remoting.transport.netty.codec.NettyKryoEncoder;
 import com.lcb.rpc.serialize.kyro.KryoSerializer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -50,15 +54,19 @@ public class NettyClient {
                     protected void initChannel(SocketChannel ch) throws Exception {
                         //如果15s之内没有发送数据给服务端的话，就发送一次心跳请求
                         ch.pipeline().addLast(new IdleStateHandler(0,5,0, TimeUnit.SECONDS));
-                        //TODO 自定义序列化的编解码器
-
-                        //TODO 自定义Handler；
+                        //TODO 自定义序列化的解码器
+                        ch.pipeline().addLast(new NettyKryoDecoder(kyroSerializer, RpcResponse.class));
+                        //TODO 自定义序列化编码器
+                        ch.pipeline().addLast(new NettyKryoEncoder(kyroSerializer, RpcRequest.class));
+                        //TODO 自定义Handler
 
                     }
                 });
 
+
     }
 
+    //Lombok的@SneakyThrows就是为了消除这样的模板代码。使用注解后不需要担心Exception的处理
     @SneakyThrows
     public Channel doConnect(InetSocketAddress inetSocketAddress){
         CompletableFuture<Channel> completableFuture=new CompletableFuture<>();
