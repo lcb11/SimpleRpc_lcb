@@ -59,6 +59,7 @@ public class NettyClient {
                         //TODO 自定义序列化编码器
                         ch.pipeline().addLast(new NettyKryoEncoder(kyroSerializer, RpcRequest.class));
                         //TODO 自定义Handler
+                        ch.pipeline().addLast(new NettyClientHandler());
 
                     }
                 });
